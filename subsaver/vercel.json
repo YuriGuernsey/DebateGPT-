@@ -1,8 +1,15 @@
 {
-    "cron": [
-      {
-        "path": "/api/cron",
-        "schedule": "0 9 * * *"
-      }
-    ]
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/cron",
+      "dest": "/api/cron"
+    }
+  ]
+}

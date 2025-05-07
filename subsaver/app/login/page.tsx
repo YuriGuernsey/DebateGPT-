@@ -1,7 +1,6 @@
-// app/login/page.tsx
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
@@ -10,15 +9,20 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) router.push('/dashboard')
+    })
+  }, [])
+
   const handleLogin = async () => {
     setLoading(true)
-    // const { data, error } = await supabase.auth.signInWithOtp({
-    //   email: 'valid.email@supabase.io',
-     
-    // })
-     const { data, error } = await supabase.auth.signInAnonymously(
-      
-     )
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/dashboard`
+      }
+    })
     setLoading(false)
     if (!error) alert('Check your email for the magic link!')
     else alert('Login failed: ' + error.message)
@@ -37,7 +41,7 @@ export default function LoginPage() {
         />
         <button
           onClick={handleLogin}
-          disabled={loading}
+          disabled={loading || !email}
           className="w-full bg-black text-white py-2 rounded"
         >
           {loading ? 'Sending...' : 'Send Magic Link'}

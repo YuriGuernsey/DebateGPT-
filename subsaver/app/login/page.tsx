@@ -12,10 +12,13 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     setLoading(true)
-    const { data, error } = await supabase.auth.signInWithOtp({
-      email: 'valid.email@supabase.io',
+    // const { data, error } = await supabase.auth.signInWithOtp({
+    //   email: 'valid.email@supabase.io',
      
-    })
+    // })
+     const { data, error } = await supabase.auth.signInAnonymously(
+      
+     )
     setLoading(false)
     if (!error) alert('Check your email for the magic link!')
     else alert('Login failed: ' + error.message)

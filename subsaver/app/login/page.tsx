@@ -19,9 +19,6 @@ export default function LoginPage() {
     setLoading(true)
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`
-      }
     })
     setLoading(false)
     if (!error) alert('Check your email for the magic link!')
